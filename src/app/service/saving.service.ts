@@ -31,5 +31,30 @@ export class SavingService {
     this.firestore.doc('Saving/' + savingId).delete();
   }
 
+  searchSaving(saving: Saving){
+    //searching method with given result from all parameters
+    return this.firestore.collection(
+      'Saving', ref => {
+        let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+
+        //the searching conditions
+        if (saving.name){
+          query = query.orderBy('name', 'asc').startAt('A');
+        }
+        if (saving.info){
+          query = query.where('info', '==', saving.info);
+        }
+        if (saving.saving){
+          query = query.where('saving', '>=', saving.saving); //search saving with greater or equal amount
+        }
+        if (saving.dateCreated){
+          //convert date string to date object
+          saving.dateCreatedTimetamp = new Date(saving.dateCreated);
+          query = query.where('dateCreatedTimestamp', '==', saving.dateCreated);
+        }
+        return query;
+      }).snapshotChanges();
+  }
+
 
 }
