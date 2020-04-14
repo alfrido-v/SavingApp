@@ -17,21 +17,21 @@ export class SavingListComponent implements OnInit {
 
   // declare saving object - type : Saving
   saving: Saving = new Saving();
-
+  
   // array of saving
-  saving: Saving[];
+  savings: Saving[];
 
   constructor(private savingService: SavingService) { }
 
   // initiate getSaving()
-  ngOnInit(): void {
+  ngOnInit() {
     this.getSaving();
   }
 
   getSaving() {
     // call getSaving() from service
     this.savingService.getSaving().subscribe(data => {
-      this.saving = data.map(e => {
+      this.savings = data.map(e => {
         return {
           id: e.payload.doc.id,
           ...e.payload.doc.data()
@@ -68,7 +68,7 @@ export class SavingListComponent implements OnInit {
   searchSaving(saving: Saving) {
     // method to search existing data saving in firestore
     this.savingService.searchSaving(saving).subscribe(data => {
-      this.saving = data.map(e => {
+      this.savings = data.map(e => {
         return {
           id: e.payload.doc.id,
           ...e.payload.doc.data()
@@ -79,7 +79,7 @@ export class SavingListComponent implements OnInit {
 
   clearSearch() {
     // clear list
-    this.saving = [];
+    this.savings = [];
     // get all
     this.getSaving();
   }

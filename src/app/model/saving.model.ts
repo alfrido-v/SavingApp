@@ -4,5 +4,7 @@ export class Saving {
     saving: number;
     info: string;
     dateCreated: Date;
+    dateCreatedTimestamp: Date;
+    lastUpdated: Date;
 }
 

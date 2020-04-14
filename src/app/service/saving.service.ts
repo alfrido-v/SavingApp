@@ -11,6 +11,7 @@ export class SavingService {
 
   // add data to firestore
   addSaving(saving: Saving) {
+    saving.dateCreatedTimestamp = new Date(saving.dateCreated);
     const savingObject = {...saving}; // convert object of type "saving" to JSON Object, because firestore understand JSON
     return this.firestore.collection('Saving').add(savingObject);
   }
@@ -22,8 +23,10 @@ export class SavingService {
 
   // update data in firestore
   updateSaving(saving: Saving) {
+    saving.dateCreatedTimestamp = new Date(saving.dateCreated);
+    saving.lastUpdated =  new Date();
     const savingObject = {...saving};
-    this.firestore.collection('Saving/' + saving.id).update(savingObject);
+    this.firestore.doc('Saving/' + saving.id).update(savingObject);
   }
 
   // detele data from firestore depends on id
@@ -49,7 +52,7 @@ export class SavingService {
         }
         if (saving.dateCreated){
           //convert date string to date object
-          saving.dateCreatedTimetamp = new Date(saving.dateCreated);
+          saving.dateCreatedTimestamp = new Date(saving.dateCreated);
           query = query.where('dateCreatedTimestamp', '==', saving.dateCreated);
         }
         return query;
